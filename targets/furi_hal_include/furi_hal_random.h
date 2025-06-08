@@ -26,6 +26,24 @@ uint32_t furi_hal_random_get(void);
  */
 void furi_hal_random_fill_buf(uint8_t* buf, uint32_t len);
 
+/** Get random upppercase hex string of given length
+
+ * @param      length string length
+ */
+char* furi_hal_random_hex_upper(uint32_t length);
+
+/** Get random lowercase hex string of given length
+
+ * @param      length string length
+ */
+char* furi_hal_random_hex_lower(uint32_t length);
+
+/** Get random string of given length
+
+ * @param      length string length
+ */
+char* furi_hal_random_string(uint32_t length);
+
 #ifdef __cplusplus
 }
 #endif
