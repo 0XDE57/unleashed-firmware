@@ -19,6 +19,18 @@ void furi_hal_random_init(void);
  */
 uint32_t furi_hal_random_get(void);
 
+/** Get random value from [0, max]
+ * 
+ * @return     32 bit random value (up to max)
+ */
+uint32_t furi_hal_random_max(uint32_t max);
+
+/** Get random value from [min, max]
+ * 
+ * @return     32 bit random value (between min and max)
+ */
+uint32_t furi_hal_random_range(uint32_t min, uint32_t max);
+
 /** Fill buffer with random data
  *
  * @param      buf  buffer pointer
@@ -43,6 +55,8 @@ char* furi_hal_random_hex_lower(uint32_t length);
  * @param      length string length
  */
 char* furi_hal_random_string(uint32_t length);
+
+char* furi_hal_random_string_buf(char* buf, uint32_t buf_size);
 
 #ifdef __cplusplus
 }

@@ -54,6 +54,16 @@ uint32_t furi_hal_random_get(void) {
     return random_val;
 }
 
+uint32_t furi_hal_random_max(uint32_t n) {
+    if(n == 0) return 0;
+    return furi_hal_random_get() % (n + 1);
+}
+
+uint32_t furi_hal_random_range(uint32_t min, uint32_t max) {
+    if(max <= min) return min;
+    return min + furi_hal_random_get() % (max - min + 1);
+}
+
 void furi_hal_random_fill_buf(uint8_t* buf, uint32_t len) {
     furi_check(buf);
     furi_check(len);
@@ -101,9 +111,7 @@ char* furi_hal_random_hex_lower(uint32_t length) {
 }
 
 char* furi_hal_random_string(uint32_t length) {
-    //furi_check(length);?
     char* buf = (char*)malloc(length + 1);
-    //furi_check(buf);?
     if(!buf) {
         return "";
     }
@@ -115,6 +123,29 @@ char* furi_hal_random_string(uint32_t length) {
     buf[length] = '\0';
     return buf;
 }
+
+char* furi_hal_random_string_buf(char* buf, uint32_t buf_size) {
+    if(!buf || buf_size < 2) {
+        return "\0"; //or should this be null?
+    }
+    for(uint32_t i = 0; i < buf_size - 1; i++) {
+        // ASCII chars from 33 ('!') to 126 ('~')
+        buf[i] = furi_hal_random_range(33, 126);
+    }
+    buf[buf_size - 1] = '\0';
+    return buf;
+}
+
+/*
+char* furi_hal_random_string_static(char* buf, uint32_t length) {
+    for(uint32_t i = 0; i < length; i++) {
+        // ASCII chars from 33 ('!') to 126 ('~') (126-33=)
+        uint32_t rnd = furi_hal_random_get();
+        buf[i] = (char)(33 + (rnd % 94));
+    }
+    buf[length] = '\0';
+    return buf;
+}*/
 
 void srand(unsigned seed) {
     UNUSED(seed);
