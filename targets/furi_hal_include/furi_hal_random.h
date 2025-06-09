@@ -1,6 +1,7 @@
 #pragma once
 
 #include <stdint.h>
+#include <stdlib.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -39,24 +40,25 @@ uint32_t furi_hal_random_range(uint32_t min, uint32_t max);
 void furi_hal_random_fill_buf(uint8_t* buf, uint32_t len);
 
 /** Get random upppercase hex string of given length
-
+ *
+ * @param      buf  buffer pointer
  * @param      length string length
  */
-char* furi_hal_random_hex_upper(uint32_t length);
+size_t furi_hal_random_hex_upper(char* buf, size_t buf_size);
 
 /** Get random lowercase hex string of given length
-
+ *
+ * @param      buf  buffer pointer
  * @param      length string length
  */
-char* furi_hal_random_hex_lower(uint32_t length);
+size_t furi_hal_random_hex_lower(char* buf, size_t buf_size);
 
 /** Get random string of given length
-
+ *
+ * @param      buf  buffer pointer
  * @param      length string length
  */
-char* furi_hal_random_string(uint32_t length);
-
-char* furi_hal_random_string_buf(char* buf, uint32_t buf_size);
+size_t furi_hal_random_string_buf(char* buf, size_t buf_size);
 
 #ifdef __cplusplus
 }

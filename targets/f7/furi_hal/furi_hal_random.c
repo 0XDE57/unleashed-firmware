@@ -8,8 +8,6 @@
 
 #include <hsem_map.h>
 
-#include <stdlib.h>
-
 #define TAG "FuriHalRandom"
 
 static uint32_t furi_hal_random_read_rng(void) {
@@ -82,70 +80,43 @@ void furi_hal_random_fill_buf(uint8_t* buf, uint32_t len) {
     LL_HSEM_ReleaseLock(HSEM, CFG_HW_RNG_SEMID, 0);
 }
 
-char* furi_hal_random_hex_upper(uint32_t length) {
+size_t furi_hal_random_hex_upper(char* buf, size_t buf_size) {
     static const char hex_chars[] = "0123456789ABCDEF";
-    char* buf = (char*)malloc(length + 1);
-    if(!buf) {
-        return "";
-    }
-    for(uint32_t i = 0; i < length; i++) {
-        uint32_t rnd = furi_hal_random_get();
-        buf[i] = hex_chars[rnd & 0xF]; // Use lowest 4 bits for a hex digit
-    }
-    buf[length] = '\0';
-    return buf;
-}
-
-char* furi_hal_random_hex_lower(uint32_t length) {
-    static const char hex_chars[] = "0123456789abcdf";
-    char* buf = (char*)malloc(length + 1);
-    if(!buf) {
-        return "";
-    }
-    for(uint32_t i = 0; i < length; i++) {
-        uint32_t rnd = furi_hal_random_get();
-        buf[i] = hex_chars[rnd & 0xF]; // Use lowest 4 bits for a hex digit
-    }
-    buf[length] = '\0';
-    return buf;
-}
-
-char* furi_hal_random_string(uint32_t length) {
-    char* buf = (char*)malloc(length + 1);
-    if(!buf) {
-        return "";
-    }
-    for(uint32_t i = 0; i < length; i++) {
-        // ASCII chars from 33 ('!') to 126 ('~') (126-33=)
-        uint32_t rnd = furi_hal_random_get();
-        buf[i] = (char)(33 + (rnd % 94));
-    }
-    buf[length] = '\0';
-    return buf;
-}
-
-char* furi_hal_random_string_buf(char* buf, uint32_t buf_size) {
     if(!buf || buf_size < 2) {
-        return "\0"; //or should this be null?
+        return 0;
+    }
+    for(uint32_t i = 0; i < buf_size - 1; i++) {
+        uint32_t rnd = furi_hal_random_get();
+        buf[i] = hex_chars[rnd & 0xF]; // Use lowest 4 bits for a hex digit
+    }
+    buf[buf_size - 1] = '\0';
+    return buf_size - 1;
+}
+
+size_t furi_hal_random_hex_lower(char* buf, size_t buf_size) {
+    static const char hex_chars[] = "0123456789abcdf";
+    if(!buf || buf_size < 2) {
+        return 0;
+    }
+    for(uint32_t i = 0; i < buf_size - 1; i++) {
+        uint32_t rnd = furi_hal_random_get();
+        buf[i] = hex_chars[rnd & 0xF]; // Use lowest 4 bits for a hex digit
+    }
+    buf[buf_size - 1] = '\0';
+    return buf_size - 1;
+}
+
+size_t furi_hal_random_string_buf(char* buf, size_t buf_size) {
+    if(!buf || buf_size < 2) {
+        return 0;
     }
     for(uint32_t i = 0; i < buf_size - 1; i++) {
         // ASCII chars from 33 ('!') to 126 ('~')
-        buf[i] = furi_hal_random_range(33, 126);
+        buf[i] = furi_hal_random_range('!', '~');
     }
     buf[buf_size - 1] = '\0';
-    return buf;
+    return buf_size - 1;
 }
-
-/*
-char* furi_hal_random_string_static(char* buf, uint32_t length) {
-    for(uint32_t i = 0; i < length; i++) {
-        // ASCII chars from 33 ('!') to 126 ('~') (126-33=)
-        uint32_t rnd = furi_hal_random_get();
-        buf[i] = (char)(33 + (rnd % 94));
-    }
-    buf[length] = '\0';
-    return buf;
-}*/
 
 void srand(unsigned seed) {
     UNUSED(seed);

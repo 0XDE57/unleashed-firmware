@@ -1390,8 +1390,6 @@ Function,+,furi_hal_pwm_stop,void,FuriHalPwmOutputId
 Function,+,furi_hal_random_fill_buf,void,"uint8_t*, uint32_t"
 Function,+,furi_hal_random_get,uint32_t,
 Function,+,furi_hal_random_init,void,
-Function,+,furi_hal_random_hex_upper,uint32_t,
-Function,+,furi_hal_random_string,uint32_t,
 Function,+,furi_hal_region_get,const FuriHalRegion*,
 Function,+,furi_hal_region_get_band,const FuriHalRegionBand*,uint32_t
 Function,+,furi_hal_region_get_name,const char*,
