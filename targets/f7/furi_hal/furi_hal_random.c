@@ -118,6 +118,32 @@ size_t furi_hal_random_string_buf(char* buf, size_t buf_size) {
     return buf_size - 1;
 }
 
+void furi_hal_random_date(char* buffer, size_t buffer_size) {
+    uint32_t year = 1970 + (furi_hal_random_get() % 130); // 1970..2099
+    uint32_t month = 1 + (furi_hal_random_get() % 12);
+
+    // number of days in each month (non-leap year base)
+    const uint8_t days_in_month[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+    // check for leap year if month is February
+    uint8_t max_days = days_in_month[month - 1];
+    if(month == 2) {
+        if((year % 4 == 0 && year % 100 != 0) || (year % 400 == 0)) {
+            max_days = 29;
+        }
+    }
+
+    uint32_t day = 1 + (furi_hal_random_get() % max_days);
+
+    // format as dd-mm-yyyy
+    snprintf(
+        buffer,
+        buffer_size,
+        "%02u-%02u-%04u",
+        (unsigned int)day,
+        (unsigned int)month,
+        (unsigned int)year);
+}
+
 void srand(unsigned seed) {
     UNUSED(seed);
 }

@@ -60,6 +60,13 @@ size_t furi_hal_random_hex_lower(char* buf, size_t buf_size);
  */
 size_t furi_hal_random_string_buf(char* buf, size_t buf_size);
 
+/** Generate random date in format dd-mm-yyyy
+ *
+ * @param      buf  buffer pointer
+ * @param      length string length
+ */
+void furi_hal_random_date(char* buf, size_t buf_size);
+
 #ifdef __cplusplus
 }
 #endif
