@@ -94,7 +94,7 @@ size_t furi_hal_random_hex_upper(char* buf, size_t buf_size) {
 }
 
 size_t furi_hal_random_hex_lower(char* buf, size_t buf_size) {
-    static const char hex_chars[] = "0123456789abcdf";
+    static const char hex_chars[] = "0123456789abcdef";
     if(!buf || buf_size < 2) {
         return 0;
     }
